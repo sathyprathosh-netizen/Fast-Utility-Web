@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast-Utility Hub — Instant Browser Tools | No Login Required</title>
+  <meta name="description" content="Fast-Utility Hub: Free instant browser tools — Password Generator, QR Code Creator, Image to Base64, Unit Converter, Pomodoro Timer, Ambient Noise Generator. No login. No upload. 100% private." />
+  <meta name="keywords" content="password generator, QR code generator, image to base64, unit converter, pomodoro timer, ambient noise, browser tools, free online tools" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Lightweight QR library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav class="nav">
+  <div class="nav-logo"><span class="material-symbols-outlined">bolt</span> Fast-Utility Hub</div>
+  
+  <div class="nav-links">
+    <button class="nav-link active" onclick="switchZone('zone-1', this)">Identity</button>
+    <button class="nav-link" onclick="switchZone('zone-2', this)">Media</button>
+    <button class="nav-link" onclick="switchZone('zone-3', this)">Focus</button>
+  </div>
+
+  <div class="nav-tools">
+    <div class="search-bar">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="tool-search" placeholder="Search tools… (Ctrl+K)" aria-label="Search tools" />
+    </div>
+
+    <button class="btn-icon" id="shortcuts-btn" aria-label="Keyboard shortcuts" title="Shortcuts (Ctrl+/)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="float-icons">
+    <span class="float-icon"><span class="material-symbols-outlined">enhanced_encryption</span></span>
+    <span class="float-icon"><span class="material-symbols-outlined">smartphone</span></span>
+    <span class="float-icon"><span class="material-symbols-outlined">image</span></span>
+    <span class="float-icon"><span class="material-symbols-outlined">timer</span></span>
+    <span class="float-icon"><span class="material-symbols-outlined">sync_alt</span></span>
+    <span class="float-icon"><span class="material-symbols-outlined" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-variation-settings: 'FILL' 1;">music_note</span></span>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">100% Free · No Login · Privacy First</div>
+      <h1 class="hero-title">Solve Tasks <span>Instantly.</span><br>No Login. No Waiting.</h1>
+      <p class="hero-sub">A collection of lightning-fast browser tools for students, developers, and professionals. Everything runs locally — your data never leaves your device.</p>
+      <p class="typing-wrap">→ <span id="typing-text"></span><span class="typing-cursor">|</span></p>
+      <a href="#tools-section" class="hero-cta" id="hero-cta">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Explore All Tools
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS + SIDEBAR ── -->
+<section class="section" id="tools-section">
+  <div class="container">
+    <div class="main-with-sidebar">
+
+      <!-- MAIN CONTENT -->
+      <div>
+
+        <!-- ZONE 1: DIGITAL IDENTITY -->
+        <div class="zone-wrapper active-zone" id="zone-1">
+          <div class="section-header fade-in-section">
+          <div class="section-tag">Zone 01</div>
+          <h2 class="section-title"><span class="material-symbols-outlined" style="font-size:0.9em;">enhanced_encryption</span> Digital <span>Identity</span></h2>
+        </div>
+
+        <div class="tools-grid">
+
+          <!-- PASSWORD GENERATOR -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon mint"><span class="material-symbols-outlined">key</span></div>
+              <div>
+                <div class="card-title">Password Generator</div>
+                <div class="card-desc">Cryptographically secure passwords, instantly</div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Length: <span id="pw-length-val">16</span> characters</label>
+              <input type="range" id="pw-length" min="6" max="64" value="16" />
+            </div>
+
+            <div class="input-group">
+              <label>Options</label>
+              <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" id="pw-upper" checked /> Uppercase</label>
+                <label class="checkbox-item"><input type="checkbox" id="pw-numbers" checked /> Numbers</label>
+                <label class="checkbox-item"><input type="checkbox" id="pw-symbols" checked /> Symbols</label>
+              </div>
+            </div>
+
+            <div class="output-box" id="pw-output" aria-live="polite">Click Generate to create a password</div>
+
+            <div class="strength-wrap">
+              <div class="strength-label" id="pw-strength-label">—</div>
+              <div class="strength-bar"><div class="strength-fill" id="pw-strength-fill"></div></div>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn-primary" onclick="generatePassword()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Generate
+              </button>
+              <button class="btn btn-ghost" onclick="copyPassword(this)">⎘ Copy</button>
+            </div>
+
+
+          </div>
+
+          <!-- QR CODE GENERATOR -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon purple"><span class="material-symbols-outlined">smartphone</span></div>
+              <div>
+                <div class="card-title">QR Code Generator</div>
+                <div class="card-desc">Turn any URL or text into a scannable QR code</div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>URL or Text</label>
+              <input type="text" id="qr-input" placeholder="https://example.com or any text…" />
+            </div>
+
+            <div id="qr-output">
+              <span id="qr-placeholder" style="color:var(--text-muted);font-size:0.85rem;">QR code will appear here</span>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn-primary" onclick="generateQR()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20v1M20 14v1"/></svg>
+                Generate QR
+              </button>
+              <button class="btn btn-secondary btn-sm" id="qr-download-btn" onclick="downloadQR()" style="display:none">⬇ Download</button>
+              <button class="btn btn-ghost btn-sm" id="qr-copy-btn" onclick="copyQR(this)" style="display:none">⎘ Copy Image</button>
+            </div>
+
+
+          </div>
+
+        </div><!-- /tools-grid -->
+        </div><!-- /zone-1 -->
+
+        <!-- ZONE 2: MEDIA OPTIMIZER -->
+        <div class="zone-wrapper" id="zone-2">
+          <div class="section-header fade-in-section" style="margin-top:24px;">
+          <div class="section-tag">Zone 02</div>
+          <h2 class="section-title"><span class="material-symbols-outlined" style="font-size:0.9em;">image</span> Media <span>Optimizer</span></h2>
+        </div>
+
+        <div class="tools-grid">
+
+          <!-- IMAGE TO BASE64 -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon orange"><span class="material-symbols-outlined">image</span></div>
+              <div>
+                <div class="card-title">Image → Base64</div>
+                <div class="card-desc">Encode images for CSS, HTML or email embedding</div>
+              </div>
+            </div>
+
+            <div class="drag-zone" id="drag-zone"
+                 ondrop="handleImageDrop(event)"
+                 ondragover="handleDragOver(event)"
+                 ondragleave="handleDragLeave(event)">
+              <input type="file" accept="image/*" onchange="handleImageDrop(event)" />
+              
+              <!-- Default State -->
+              <div id="drag-zone-default">
+                <div class="drag-zone-icon"><span class="material-symbols-outlined">folder_open</span></div>
+                <div class="drag-zone-text"><strong>Drop an image</strong> or click to browse<br><span style="font-size:0.75rem">PNG, JPG, GIF, SVG, WebP</span></div>
+              </div>
+
+              <!-- Preview State (Initially Hidden) -->
+              <div id="drag-zone-preview" style="display:none; flex-direction:column; align-items:center;">
+                <img id="img-preview" src="" alt="Preview" style="max-height:120px; border-radius:8px; margin-bottom:12px;" />
+                <div id="img-info" style="font-size:0.75rem; color:var(--text-muted);"></div>
+              </div>
+            </div>
+
+            <div class="input-group" style="margin-top:14px;">
+              <label>Base64 Output (preview)</label>
+              <div class="output-box" id="b64-output" style="font-size:0.72rem;">Waiting for image…</div>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn-primary" onclick="copyBase64(this)">⎘ Copy Base64</button>
+              <button class="btn btn-ghost" onclick="copyImgTag(this)">⎘ Copy &lt;img&gt; Tag</button>
+            </div>
+
+
+          </div>
+
+          <!-- UNIT CONVERTER -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon mint"><span class="material-symbols-outlined">sync_alt</span></div>
+              <div>
+                <div class="card-title">Unit Converter</div>
+                <div class="card-desc">Metric ↔ Imperial, instant live conversion</div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Conversion Type</label>
+              <select id="conv-type" onchange="convertUnit()">
+                <option value="temp-cf">°C → °F (Temperature)</option>
+                <option value="temp-fc">°F → °C (Temperature)</option>
+                <option value="kg-lb">KG → LBS (Weight)</option>
+                <option value="lb-kg">LBS → KG (Weight)</option>
+                <option value="km-mi">KM → Miles (Distance)</option>
+                <option value="mi-km">Miles → KM (Distance)</option>
+                <option value="cm-in">CM → Inches (Length)</option>
+                <option value="in-cm">Inches → CM (Length)</option>
+                <option value="l-gal">Liters → Gallons (Volume)</option>
+                <option value="gal-l">Gallons → Liters (Volume)</option>
+              </select>
+            </div>
+
+            <div class="converter-row">
+              <div class="input-group" style="margin:0">
+                <label id="unit-from">°C</label>
+                <input type="number" id="conv-input" placeholder="Enter value" oninput="convertUnit()" />
+              </div>
+              <div class="converter-arrow">→</div>
+              <div class="input-group" style="margin:0">
+                <label id="unit-to">°F</label>
+                <div class="output-box" id="conv-output" style="min-height:42px;display:flex;align-items:center;">—</div>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div><!-- /tools-grid -->
+        </div><!-- /zone-2 -->
+
+        <!-- ZONE 3: FOCUS TOOLS -->
+        <div class="zone-wrapper" id="zone-3">
+          <div class="section-header fade-in-section" style="margin-top:24px;">
+          <div class="section-tag">Zone 03</div>
+          <h2 class="section-title"><span class="material-symbols-outlined" style="font-size:0.9em;">hourglass_empty</span> Focus <span>Tools</span></h2>
+        </div>
+
+        <div class="tools-grid">
+
+          <!-- POMODORO TIMER -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon red"><span class="material-symbols-outlined">timer</span></div>
+              <div>
+                <div class="card-title">Pomodoro Timer</div>
+                <div class="card-desc">9-hour work sprints with 1-hour breaks — stays active in background</div>
+              </div>
+            </div>
+
+            <div class="pomo-wrap">
+              <div class="pomo-tabs">
+                <button class="pomo-tab active" onclick="setPomoMode(false); this.parentElement.querySelectorAll('.pomo-tab').forEach((t,i)=>t.classList.toggle('active',i===0))">9H Work</button>
+                <button class="pomo-tab" onclick="setPomoMode(true); this.parentElement.querySelectorAll('.pomo-tab').forEach((t,i)=>t.classList.toggle('active',i===1))">1H Break</button>
+              </div>
+
+              <div class="pomo-circle">
+                <svg class="pomo-svg" width="160" height="160" viewBox="0 0 160 160">
+                  <circle class="pomo-ring-bg" cx="80" cy="80" r="70"/>
+                  <circle class="pomo-ring" id="pomo-ring" cx="80" cy="80" r="70"
+                    stroke-dasharray="439.82" stroke-dashoffset="0"/>
+                </svg>
+                <div class="pomo-time">
+                  <span id="pomo-time">09:00:00</span>
+                  <span class="pomo-mode-label" id="pomo-mode">WORK</span>
+                </div>
+              </div>
+
+              <div class="pomo-controls">
+                <button class="btn btn-primary" id="pomo-start" onclick="togglePomodoro()">▶ Start</button>
+                <button class="btn btn-ghost" onclick="resetPomodoro()">↺ Reset</button>
+              </div>
+            </div>
+
+
+          </div>
+
+          <!-- AMBIENT NOISE -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon purple"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">headphones</span></div>
+              <div>
+                <div class="card-title">Ambient Noise Generator</div>
+                <div class="card-desc">Synthesized soundscapes to boost focus</div>
+              </div>
+            </div>
+
+            <div class="noise-grid">
+              <button class="noise-btn" onclick="playNoise('white', this)" title="White Noise">
+                <span class="noise-emoji"><span class="material-symbols-outlined">air</span></span>
+                <span>White Noise</span>
+                <div class="noise-wave">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </button>
+              <button class="noise-btn" onclick="playNoise('rain', this)" title="Rain Sounds">
+                <span class="noise-emoji"><span class="material-symbols-outlined">water_drop</span></span>
+                <span>Rain</span>
+                <div class="noise-wave">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </button>
+              <button class="noise-btn" onclick="playNoise('coffee', this)" title="Coffee Shop">
+                <span class="noise-emoji"><span class="material-symbols-outlined">storefront</span></span>
+                <span>Coffee Shop</span>
+                <div class="noise-wave">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </button>
+            </div>
+
+            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:16px;text-align:center;">Click a sound to play. Click again to stop.</p>
+            <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;">All audio is synthesized in your browser — no files downloaded.</p>
+
+
+          </div>
+
+          <!-- TYPING SPEED TESTER -->
+          <div class="tool-card fade-in-section">
+            <div class="card-header">
+              <div class="card-icon blue"><span class="material-symbols-outlined">keyboard</span></div>
+              <div>
+                <div class="card-title">Typing Speed Tester</div>
+                <div class="card-desc">Shows WPM & Real-time typing animation</div>
+              </div>
+            </div>
+
+            <div class="typing-stats">
+              <div class="stat"><span id="type-wpm">0</span> WPM</div>
+              <div class="stat"><span id="type-acc">100</span>% ACC</div>
+              <div class="stat"><span id="type-time">60</span>s</div>
+            </div>
+
+            <div class="typing-box" id="typing-box">
+              <input type="text" id="typing-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <div id="typing-text-display">Click to start typing test...</div>
+            </div>
+
+            <div class="btn-group" style="margin-top:16px;">
+              <button class="btn btn-ghost" onclick="resetTypingTest()">↺ Restart Test</button>
+            </div>
+
+
+          </div>
+
+        </div><!-- /tools-grid -->
+        </div><!-- /zone-3 -->
+
+      </div><!-- /main -->
+
+      <!-- SIDEBAR: DID YOU KNOW -->
+      <aside>
+        <div class="sidebar-tip fade-in-section">
+          <div class="tip-header"><span class="material-symbols-outlined" style="font-size: 1.1em; vertical-align: top; margin-right: 2px;">lightbulb</span> Did You Know?</div>
+          <div class="tip-card" id="tip-card">
+            <div class="tip-number">TIP #01</div>
+            <p class="tip-text">Loading tip…</p>
+          </div>
+          <div class="tip-nav" id="tip-nav">
+            <span class="tip-dot active" data-idx="0"></span>
+            <span class="tip-dot" data-idx="1"></span>
+            <span class="tip-dot" data-idx="2"></span>
+            <span class="tip-dot" data-idx="3"></span>
+            <span class="tip-dot" data-idx="4"></span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- SIDEBAR: POPULAR ICONS -->
+      <div id="sidebar-icons-container" style="display: block; margin-top: 24px;">
+        <aside class="fade-in-section">
+          <div class="icons-showcase-card">
+            <div class="tip-header">
+              <span class="material-symbols-outlined" style="font-size:1.1em;vertical-align:top;margin-right:4px;">interests</span>
+              Popular Icons
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">Click an icon to reveal its code.</p>
+            
+            <!-- Code Display Area -->
+            <div id="icon-code-display" class="icon-code-hidden">
+              <code id="icon-code-text" style="cursor: text;"></code>
+              <span class="material-symbols-outlined" onclick="window.copyIconCode()" style="font-size: 1.2rem; margin-left: 8px; cursor: pointer; color: var(--accent-primary); transition: transform 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">content_copy</span>
+            </div>
+
+            <div class="icon-chips-grid">
+              <div class="icon-chip" onclick="showIconCode('lock', this)" title="Security"><span class="material-symbols-outlined">lock</span></div>
+              <div class="icon-chip" onclick="showIconCode('search', this)" title="Search"><span class="material-symbols-outlined">search</span></div>
+              <div class="icon-chip" onclick="showIconCode('timer', this)" title="Timer"><span class="material-symbols-outlined">timer</span></div>
+              <div class="icon-chip" onclick="showIconCode('palette', this)" title="Design"><span class="material-symbols-outlined">palette</span></div>
+              <div class="icon-chip" onclick="showIconCode('description', this)" title="Document"><span class="material-symbols-outlined">description</span></div>
+              <div class="icon-chip" onclick="showIconCode('keyboard', this)" title="Keyboard"><span class="material-symbols-outlined">keyboard</span></div>
+              <div class="icon-chip" onclick="showIconCode('qr_code', this)" title="QR Code"><span class="material-symbols-outlined">qr_code</span></div>
+              <div class="icon-chip" onclick="showIconCode('image', this)" title="Image"><span class="material-symbols-outlined">image</span></div>
+              <div class="icon-chip" onclick="showIconCode('bolt', this)" title="Bolt"><span class="material-symbols-outlined">bolt</span></div>
+              <div class="icon-chip" onclick="showIconCode('headphones', this)" title="Headphones"><span class="material-symbols-outlined">headphones</span></div>
+            </div>
+            <div style="display:flex; justify-content:center;">
+              <a href="https://fonts.google.com/icons" target="_blank" rel="noopener" class="icons-cta">
+                <span>Explore 2,000+ Icons</span>
+                <span class="material-symbols-outlined" style="font-size:1.1rem;">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </div><!-- /main-with-sidebar -->
+  </div><!-- /container -->
+</section>
+
+<!-- ── SEO CONTENT SECTION ── -->
+<section class="seo-section">
+  <div class="container">
+    <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:8px;">How to Use Fast-Utility Hub</h2>
+    <p style="color:var(--text-muted);margin-bottom:24px;font-size:0.9rem;">Expand any tool below to read a detailed guide.</p>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">key</span> Password Generator — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The Password Generator tool creates cryptographically secure passwords entirely in your browser using the <strong>Web Crypto API</strong>. This means your passwords are never transmitted over the internet or stored anywhere — they exist only on your screen for the seconds you need them.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Start by adjusting the length slider. Security experts recommend a minimum of 16 characters for most accounts. Enable <em>Uppercase</em> letters, <em>Numbers</em>, and <em>Symbols</em> to increase entropy. Click <em>Generate</em> and watch the typewriter animation reveal your password. The strength meter gives instant visual feedback using color codes: red (weak) through green (very strong).</p>
+          <p style="margin-top:10px;"><strong>Best Practices:</strong> Use a unique password for every account. Pair this tool with a reputable password manager like Bitwarden or 1Password. Never reuse passwords across services. A 20+ character password with all character types enabled has over 100 bits of entropy — effectively uncrackable by brute force. Consider generating passwords of 32+ characters for your most critical accounts like email and banking.</p>
+          <p style="margin-top:10px;"><strong>Why it's useful:</strong> Data breaches expose millions of passwords each year. Weak or reused passwords are the #1 cause of account takeovers. Using a strong, unique password for every account is the single most effective security habit you can build.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">smartphone</span> QR Code Generator — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The QR Code Generator instantly converts any URL, text, phone number, email address, or WiFi credentials into a scannable QR code image — all locally, with no server involved. The QR code is rendered on an HTML canvas and can be downloaded as a PNG or copied directly to your clipboard.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Type or paste any text or URL into the input field. Press Enter or click <em>Generate QR</em>. The QR code appears with a smooth scale-in animation styled in the site's signature neon-on-dark color scheme. Use the <em>Download</em> button to save a PNG file, or use <em>Copy Image</em> to paste it directly into a document, email, or design tool.</p>
+          <p style="margin-top:10px;"><strong>Use cases:</strong> Share links at conferences without typing, embed contact info (vCard format) in business cards, link print materials to digital resources, share WiFi passwords with guests using the format <code>WIFI:S:NetworkName;T:WPA;P:Password;;</code>, create QR codes for app store links, or point users to a specific product page.</p>
+          <p style="margin-top:10px;"><strong>Best Practices:</strong> Always test your QR code with at least two different devices before printing. Keep URLs short using a link shortener to reduce QR complexity. High-contrast QR codes scan more reliably — avoid color combinations with low contrast. This tool generates Medium error correction level, balancing data density with scan reliability.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">image</span> Image to Base64 Converter — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Base64 encoding converts binary image data into a string of ASCII characters that can be embedded directly inside HTML, CSS, JavaScript, or JSON files. The Image to Base64 Converter processes your image entirely in the browser using the FileReader API — no upload to any server occurs, making it ideal for sensitive or private images.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Drag and drop any image onto the drop zone, or click to open a file browser. Supported formats include PNG, JPG, JPEG, GIF, WebP, and SVG. An instant preview appears above the output. The Base64 string is displayed (truncated for readability) and the full string is copied to clipboard with a single click. You can also copy a ready-to-paste HTML <code>&lt;img&gt;</code> tag.</p>
+          <p style="margin-top:10px;"><strong>When to use Base64:</strong> Embedding small icons in CSS to eliminate HTTP requests, inlining images in email templates where external links may be blocked, embedding images in JSON API payloads, creating self-contained HTML files, and including images in data URIs for canvas elements.</p>
+          <p style="margin-top:10px;"><strong>Best Practices:</strong> Base64 encoding increases file size by approximately 33%. Only use it for small assets (under 10KB) to avoid performance penalties. Large images should always be served as external files. Use SVG format when possible — SVG files are already text-based and don't need Base64 encoding in most HTML contexts.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">sync_alt</span> Unit Converter — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The Unit Converter provides instant, live conversion between the most commonly needed metric and imperial measurements. Unlike app-based converters, it works offline and requires zero page loads between conversions.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Select your conversion type from the dropdown menu, then type a value in the input field. Results update in real-time as you type — no button press required. The animated number flip gives clear visual confirmation that the value has been recalculated.</p>
+          <p style="margin-top:10px;"><strong>Available conversions:</strong> Temperature (Celsius ↔ Fahrenheit), Weight (Kilograms ↔ Pounds), Distance (Kilometers ↔ Miles), Length (Centimeters ↔ Inches), and Volume (Liters ↔ Gallons). Results are shown to 4 decimal places for precision.</p>
+          <p style="margin-top:10px;"><strong>Practical use cases:</strong> Cooking and recipe adaptation (US vs European recipes), travel planning (understanding speed limits and distances), shopping online from international stores (clothing sizes, weights), fitness tracking (BMI calculations, marathon distances), and science coursework that requires unit normalization.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">timer</span> Pomodoro Timer — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. It typically breaks work into focused 25-minute sessions, but this tool is customized for long-form **9-hour work sessions** separated by **1-hour breaks**. Research consistently shows that structured pacing reduces mental fatigue, improves concentration, and increases output quality over long durations.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Click <em>Start</em> to begin a 9-hour work session. The circular SVG progress ring depletes visually as time passes. When the timer ends, an audio chime plays and the timer automatically switches to Break mode. Switch between Work and Break modes manually at any time using the tabs. The timer continues running even if you switch browser tabs — it uses timestamp-based tracking rather than interval counting, so it stays accurate in the background.</p>
+          <p style="margin-top:10px;"><strong>Productivity tips:</strong> Before starting, write down the single task you'll focus on during the Pomodoro. Turn off notifications. If a distraction crosses your mind, write it down and return to it later. Treat the break seriously — step away from the screen, stretch, or hydrate. Do not check social media during work sessions. Track completed Pomodoros to measure daily productivity trends over time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span class="material-symbols-outlined">headphones</span> Ambient Noise Generator — Complete Guide
+        <span class="accordion-chevron">▾</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The Ambient Noise Generator synthesizes focus-enhancing soundscapes directly in your browser using the Web Audio API. No audio files are downloaded — every sound is algorithmically generated in real-time from mathematical noise functions. This makes the tool completely private, instant, and works offline after the initial page load.</p>
+          <p style="margin-top:10px;"><strong>Available sounds:</strong> <em>White Noise</em> — equal-energy across all frequencies, ideal for masking distracting office chatter; <em>Rain</em> — band-pass filtered noise mimicking rainfall patterns, widely used for sleep and relaxation; <em>Coffee Shop</em> — Brown noise (also called red noise) with natural low-frequency warmth that mimics the ambient hum of a busy café environment, which studies show boosts creative thinking at moderate volumes.</p>
+          <p style="margin-top:10px;"><strong>How to use it:</strong> Click any sound button to activate it. The button glows and a waveform animation appears. Click the same button again to stop. Only one sound plays at a time. Combine this tool with the Pomodoro Timer to create a complete focused work environment session.</p>
+          <p style="margin-top:10px;"><strong>Why ambient noise helps:</strong> A 2012 study in the Journal of Consumer Research found that moderate ambient noise (~70dB) enhances creative performance compared to silence. Low-frequency sounds in particular are associated with reduced anxiety and improved focus — a phenomenon known as stochastic resonance. White and brown noise mask sudden environmental sounds (speech, door slams) that break concentration.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <p>Built with <span class="material-symbols-outlined" style="color: var(--accent-warn); font-size: 1.1em; vertical-align: middle;">favorite</span> by <strong>Fast-Utility Hub</strong> · All tools run 100% in your browser · No data ever leaves your device</p>
+    <p style="margin-top:8px;font-size:0.78rem;">Press <kbd style="background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:4px;padding:1px 6px;font-family:monospace;">Ctrl+/</kbd> for keyboard shortcuts</p>
+  </div>
+</footer>
+
+<!-- ── KEYBOARD SHORTCUTS POPUP ── -->
+<div class="shortcuts-popup" id="shortcuts-panel">
+  <h4><span class="material-symbols-outlined">keyboard</span> Keyboard Shortcuts</h4>
+  <div class="shortcut-row"><span>Search tools</span><kbd class="shortcut-key">Ctrl + K</kbd></div>
+
+  <div class="shortcut-row"><span>This panel</span><kbd class="shortcut-key">Ctrl + /</kbd></div>
+  <div class="shortcut-row"><span>Close panel</span><kbd class="shortcut-key">Esc</kbd></div>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="password.js"></script>
+<script src="qr.js"></script>
+<script src="base64.js"></script>
+<script src="converter.js"></script>
+<script src="pomodoro.js"></script>
+<script src="noise.js"></script>
+<script src="typing.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
